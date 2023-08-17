@@ -1,4 +1,4 @@
-from src.tumor.server import server
+from tumor.server import server
 
 import os
 import sys
