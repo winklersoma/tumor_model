@@ -1,2 +1,2 @@
-from src.tumor.model import TumorModel
-from src.tumor.agent import TumorCell
+from tumor.model import TumorModel
+from tumor.agent import TumorCell
