@@ -1,7 +1,7 @@
 from mesa.visualization.modules import CanvasGrid
 from mesa.visualization.ModularVisualization import ModularServer
 
-import src.tumor as tumor
+import tumor as tumor
 
 
 def tumor_model_portrayal(person):
