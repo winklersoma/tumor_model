@@ -1,4 +1,4 @@
-import src.tumor as tumor
+import tumor as tumor
 
 from mesa.model import Model
 from mesa.space import MultiGrid
