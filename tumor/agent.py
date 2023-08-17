@@ -1,5 +1,5 @@
 from mesa.agent import Agent
-import src.tumor as tumor
+import tumor as tumor
 
 import random
 
