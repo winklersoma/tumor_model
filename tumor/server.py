@@ -1,7 +1,15 @@
-from mesa.visualization.modules import CanvasGrid
-from mesa.visualization.ModularVisualization import ModularServer
-
 import tumor as tumor
+
+from mesa.visualization.ModularVisualization import ModularServer
+from mesa.visualization.modules import CanvasGrid, TextElement
+
+
+class CounterElement(TextElement):
+    """
+    Display a text count of how many cells there are.
+    """
+    def render(self, model):
+        return "Cancer cells: " + str(model.cell_number)
 
 
 def tumor_model_portrayal(person):
@@ -28,20 +36,16 @@ def tumor_model_portrayal(person):
         portrayal["Shape"] = "pics/transitory_black.png"
         portrayal["scale"] = 0.9
         portrayal["Layer"] = 2
+
     else:
         pass
 
     return portrayal
 
 
+counter_element = CounterElement()
 canvas_element = CanvasGrid(tumor_model_portrayal, 40, 40, 500, 500)
 
-model_params = {
-    "height": 40,
-    "width": 40,
-    "num_agent": 1
-}
+model_params = {"height": 40, "width": 40}
 
-server = ModularServer(
-    tumor.TumorModel, [canvas_element], "Tumor model", model_params
-)
+server = ModularServer(tumor.TumorModel, [canvas_element, counter_element], "Tumor model", model_params)
