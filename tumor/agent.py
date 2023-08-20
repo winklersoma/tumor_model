@@ -1,5 +1,6 @@
-from mesa.agent import Agent
 import tumor as tumor
+
+from mesa.agent import Agent
 
 import random
 
@@ -14,6 +15,9 @@ def division() -> bool:
 
 
 class TumorCell(Agent):
+    """
+    Constructor for the TumorCell Agent.
+    """
     def __init__(self, unique_id: int, model: tumor.TumorModel, stem: bool, metastatic: bool):
         super().__init__(unique_id=unique_id,
                          model=model)
@@ -32,27 +36,27 @@ class TumorCell(Agent):
         # mitosis
         self.divide = division()
         # movement
-        if not self.stem and not self.metastatic:
-            self.move()
+        self.movement()
+
+    def movement(self):
+        """
+        Movement method for the tumor cells.
+        :return: None
+        """
+        self.model: tumor.TumorModel
+        # using the moore neighbourhood to get destination options
+        cells_to_move = self.model.grid.get_neighborhood(
+            pos=self.pos,
+            moore=True,
+            include_center=False,
+            radius=1)
+        # movement for transitory cells
+        if (not self.stem) and (not self.metastatic):
+            destination_cell = self.model.random.choice(cells_to_move)
+        # movement for the young metastatic stem cell
         if self.metastatic and self.age < (min(self.model.grid.width, self.model.grid.height) / 3):
-            self.metastatic_movement()
-
-    def move(self):
-        self.model: tumor.TumorModel
-        cells_to_move = self.model.grid.get_neighborhood(
-            pos=self.pos,
-            moore=True,
-            include_center=False,
-            radius=1)
-        destination_cell = self.model.random.choice(cells_to_move)
-        self.model.grid.move_agent(agent=self, pos=destination_cell)
-
-    def metastatic_movement(self):
-        self.model: tumor.TumorModel
-        cells_to_move = self.model.grid.get_neighborhood(
-            pos=self.pos,
-            moore=True,
-            include_center=False,
-            radius=1)
-        destination_cell = cells_to_move[self.unique_id % 8]  # Meaning that the direction of the movement is constant!
+            destination_cell = cells_to_move[self.unique_id % 8]  # The direction of the movement is constant!
+        # original stem and old metastatic stems stay put
+        else:
+            destination_cell = self.pos
         self.model.grid.move_agent(agent=self, pos=destination_cell)
