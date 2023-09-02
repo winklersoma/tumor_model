@@ -1,7 +1,7 @@
 import tumor as tumor
 
 from mesa.visualization.ModularVisualization import ModularServer
-from mesa.visualization.modules import CanvasGrid, TextElement
+from mesa.visualization.modules import CanvasGrid, TextElement, ChartModule
 
 
 class CounterElement(TextElement):
@@ -43,9 +43,10 @@ def tumor_model_portrayal(person):
     return portrayal
 
 
+cell_chart = ChartModule([{"Label": "num_cells", "Color": "Black"}])
 counter_element = CounterElement()
 canvas_element = CanvasGrid(tumor_model_portrayal, 40, 40, 500, 500)
 
 model_params = {"height": 40, "width": 40}
 
-server = ModularServer(tumor.TumorModel, [canvas_element, counter_element], "Tumor model", model_params)
+server = ModularServer(tumor.TumorModel, [canvas_element, counter_element, cell_chart], "Tumor model", model_params)
